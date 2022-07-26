@@ -34,6 +34,7 @@ DIRECTORY=`dirname "$ABSOLUTE_FILENAME"`
 # Filling script folders and custom sheets
 
 cp $DIRECTORY/Install/$CONFFOLDER/*.sh $SCRIPTS
+cp $DIRECTORY/init-bird.sh $SCRIPTS
 chmod +x $SCRIPTS/*.sh
 cp -i $DIRECTORY/Install/$CONFFOLDER/*.list $LISTS
 
@@ -66,6 +67,7 @@ fi
 # Organizing scripts into folders
 ln -sf $SCRIPTS/bird-table.sh /opt/etc/init.d/S02bird-table
 ln -sf $SCRIPTS/add-bird_routes.sh /opt/etc/cron.hourly/
+ln -sf $SCRIPTS/init-bird.sh /opt/etc/init.d/S04bird
 
 # Starting Services
 /opt/etc/init.d/S02bird-table start
