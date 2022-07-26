@@ -21,7 +21,7 @@ else
 fi
 
 # Installing packages
-opkg install bird1-ipv4 curl cron bind-dig iprange
+opkg install bird2 curl cron bind-dig iprange
 
 # Create start folders
 mkdir -p $SCRIPTS
@@ -38,10 +38,10 @@ chmod +x $SCRIPTS/*.sh
 cp -i $DIRECTORY/Install/$CONFFOLDER/*.list $LISTS
 
 # Copying the bird configuration file
-if [ ! -f "/opt/etc/bird4.conf-opkg" ]; then
-  mv /opt/etc/bird4.conf /opt/etc/bird4.conf-opkg;
+if [ ! -f "/opt/etc/bird.conf-opkg" ]; then
+  mv /opt/etc/bird.conf /opt/etc/bird.conf-opkg;
 fi
-cp -i $DIRECTORY/Install/$CONFFOLDER/bird4.conf /opt/etc/bird4.conf
+cp -i $DIRECTORY/Install/$CONFFOLDER/bird.conf /opt/etc/bird.conf
 
 # Reading vpn and provider interfaces, replacing in scripts and bird configuration
 echo -e "\n----------------------"
@@ -49,27 +49,27 @@ ifconfig | grep -B 1 "inet addr" | awk '{print $1$2}' | sed ':a;N;$!ba;s/Link\n/
 
 echo "Enter the name of the provider interface from the list above (for exaple ppp0 or eth3)"
 read ISP
-sed -i 's/ISPINPUT/'$ISP'/' $SCRIPTS/add-bird4_routes.sh
+sed -i 's/ISPINPUT/'$ISP'/' $SCRIPTS/add-bird_routes.sh
 
 echo "Enter the VPN interface name from the list above (for exaple ovpn_br0 or nwg0)"
 read VPN1
-sed -i 's/VPN1INPUT/'$VPN1'/' $SCRIPTS/add-bird4_routes.sh
-sed -i 's/VPN1INPUT/'$VPN1'/' /opt/etc/bird4.conf
+sed -i 's/VPN1INPUT/'$VPN1'/' $SCRIPTS/add-bird_routes.sh
+sed -i 's/VPN1INPUT/'$VPN1'/' /opt/etc/bird.conf
 
 if [ "$conf" -eq "1" ]; then 
   echo "Enter the Second VPN interface name from the list above (for exaple ovpn_br0 or nwg0)"
   read VPN2
-  sed -i 's/VPN2INPUT/'$VPN2'/' $SCRIPTS/add-bird4_routes.sh
-  sed -i 's/VPN2INPUT/'$VPN2'/' /opt/etc/bird4.conf
+  sed -i 's/VPN2INPUT/'$VPN2'/' $SCRIPTS/add-bird_routes.sh
+  sed -i 's/VPN2INPUT/'$VPN2'/' /opt/etc/bird.conf
 fi
 
 # Organizing scripts into folders
 ln -sf $SCRIPTS/bird-table.sh /opt/etc/init.d/S02bird-table
-ln -sf $SCRIPTS/add-bird4_routes.sh /opt/etc/cron.hourly/
+ln -sf $SCRIPTS/add-bird_routes.sh /opt/etc/cron.hourly/
 
 # Starting Services
 /opt/etc/init.d/S02bird-table start
-$SCRIPTS/add-bird4_routes.sh
+$SCRIPTS/add-bird_routes.sh
 /opt/etc/init.d/S10cron start
 /opt/etc/init.d/S04bird1-ipv4 start
 
