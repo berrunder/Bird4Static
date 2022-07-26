@@ -34,7 +34,7 @@ DIRECTORY=`dirname "$ABSOLUTE_FILENAME"`
 # Filling script folders and custom sheets
 
 cp $DIRECTORY/Install/$CONFFOLDER/*.sh $SCRIPTS
-cp $DIRECTORY/init-bird.sh $SCRIPTS
+cp $DIRECTORY/Install/init-bird.sh $SCRIPTS
 chmod +x $SCRIPTS/*.sh
 cp -i $DIRECTORY/Install/$CONFFOLDER/*.list $LISTS
 
